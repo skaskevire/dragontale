@@ -2,8 +2,12 @@ package GameState;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
+import Entity.Enemy;
+import Entity.HUD;
 import Entity.Player;
+import Entity.Enemies.Slugger;
 import Main.GamePanel;
 import TileMap.Background;
 import TileMap.TileMap;
@@ -13,6 +17,8 @@ public class Level1State extends GameState
 	private TileMap tileMap;
 	private Background bg;
 	private Player player;
+	private ArrayList<Enemy> enemies;
+	private HUD hud;
 	
 	public Level1State(GameStateManager gsm)
 	{
@@ -27,7 +33,7 @@ public class Level1State extends GameState
 		tileMap.loadTiles("/Tilesets/grasstileset.gif");
 		tileMap.loadMap("/Maps/level1-1.map");
 		tileMap.setPosition(0, 0);	
-		tileMap.setTween(1);
+		tileMap.setTween(0.07);
 		
 
 		bg = new Background("/Backgrounds/grassbg1.gif", 0.1);
@@ -36,6 +42,12 @@ public class Level1State extends GameState
 		player = new Player(tileMap);
 		
 		player.setPosition(100, 100);
+		
+		enemies = new ArrayList<Enemy>();
+		Slugger s = new Slugger(tileMap);
+		s.setPosition(100,100);
+		enemies.add(s);
+		hud = new HUD(player);
 	}
 
 	@Override
@@ -46,6 +58,12 @@ public class Level1State extends GameState
 				GamePanel.WIDTH / 2 - player.getX(),
 				GamePanel.HEIGHT / 2 - player.getY()
 				);
+		bg.setPosition(tileMap.getX(), tileMap.getY());
+		
+		for (int i = 0; i < enemies.size(); i++)
+		{
+			enemies.get(i).update();
+		}
 		
 	}
 
@@ -55,6 +73,10 @@ public class Level1State extends GameState
 		bg.draw(g);		
 		tileMap.draw(g);	
 		player.draw(g);
+		for (int i = 0; i < enemies.size(); i++) {
+			enemies.get(i).draw(g);
+		}
+		hud.draw(g);
 		
 	}
 

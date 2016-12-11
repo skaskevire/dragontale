@@ -383,15 +383,7 @@ public class Player extends MapObject
 			}
 		}
 		
-		if(facingRight)
-		{
-			g.drawImage(animation.getImage(), (int)(x + xmap -width / 2), (int)(y + ymap -height / 2), null);
-		
-		}
-		else
-		{			
-			g.drawImage(animation.getImage(), (int)(x + xmap - width / 2 + width), (int)(y + ymap -height / 2),-width, height, null);
-		}
+		super.draw(g);
 		
 		
 	//	g.drawString("x: " + String.valueOf(x),0, 10);
