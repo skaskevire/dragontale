@@ -46,7 +46,9 @@ public class Level1State extends GameState
 		enemies = new ArrayList<Enemy>();
 		Slugger s = new Slugger(tileMap);
 		s.setPosition(100,100);
+
 		enemies.add(s);
+
 		hud = new HUD(player);
 	}
 
@@ -60,9 +62,18 @@ public class Level1State extends GameState
 				);
 		bg.setPosition(tileMap.getX(), tileMap.getY());
 		
+		
+		//attack enemies
+		player.checkAttack(enemies);
+		
 		for (int i = 0; i < enemies.size(); i++)
 		{
 			enemies.get(i).update();
+			if(enemies.get(i).isDead())
+			{
+				enemies.remove(i);
+				i--;
+			}
 		}
 		
 	}

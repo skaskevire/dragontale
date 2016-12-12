@@ -70,7 +70,7 @@ public class Player extends MapObject
 
 		scratchDamage = 8;
 		scratchRange = 40;
-		
+
 		fireBalls = new ArrayList<FireBall>();
 
 		try
@@ -82,8 +82,7 @@ public class Player extends MapObject
 			for (int i = 0; i < 7; i++)
 			{
 				BufferedImage[] bi = new BufferedImage[numFrames[i]];
-				
-				
+
 				for (int j = 0; j < numFrames[i]; j++)
 				{
 					if (i != 6)
@@ -92,11 +91,12 @@ public class Player extends MapObject
 					}
 					else
 					{
-						bi[j] = spritesheet.getSubimage(j * width * 2, i * height, width *2, height);
+						bi[j] = spritesheet.getSubimage(j * width * 2, i * height, width * 2,
+								height);
 					}
 
 				}
-				
+
 				sprites.add(bi);
 			}
 
@@ -105,101 +105,101 @@ public class Player extends MapObject
 		{
 			e.printStackTrace();
 		}
-		
+
 		animation = new Animation();
 		currentAction = IDLE;
 		animation.setFrames(sprites.get(IDLE));
 		animation.setDelay(400);
 
 	}
-	
+
 	public int getHealth()
 	{
 		return health;
 	}
+
 	public int getMaxHealth()
 	{
 		return maxHealth;
 	}
+
 	public int getFire()
 	{
 		return fire;
 	}
+
 	public int getMaxFire()
 	{
 		return maxFire;
 	}
-	
+
 	public void setFiring()
 	{
 		firing = true;
 	}
-	
+
 	public void setScratching()
 	{
 		scratching = true;
 	}
-	
+
 	public void setGliding(boolean b)
 	{
 		gliding = b;
 	}
-	
+
 	public void update()
 	{
 		getNextPosition();
 		checkTileMapCollision();
 		setPosition(xtemp, ytemp);
-		
-		
-		if(currentAction == SCRATCHING)
+
+		if (currentAction == SCRATCHING)
 		{
-			if(animation.hasPlayedOnce())
+			if (animation.hasPlayedOnce())
 			{
 				scratching = false;
 			}
 		}
-		
-		if(currentAction == FIREBALL)
+
+		if (currentAction == FIREBALL)
 		{
-			if(animation.hasPlayedOnce())
+			if (animation.hasPlayedOnce())
 			{
 				firing = false;
 			}
 		}
-		
+
 		fire += 1;
-		if(fire > maxFire)
+		if (fire > maxFire)
 		{
 			fire = maxFire;
 		}
-		if(firing && currentAction != FIREBALL)
+		if (firing && currentAction != FIREBALL)
 		{
-			if(fire > fireCost)
+			if (fire > fireCost)
 			{
 				fire -= fireCost;
 				FireBall fb = new FireBall(tileMap, facingRight);
 				fb.setPosition(x, y);
 				fireBalls.add(fb);
-				
+
 			}
 		}
-		
+
 		for (int i = 0; i < fireBalls.size(); i++)
 		{
 			fireBalls.get(i).update();
-			if(fireBalls.get(i).shouldRemove())
+			if (fireBalls.get(i).shouldRemove())
 			{
 				fireBalls.remove(i);
 				i--;
 			}
 		}
-		
-		
-		
-		if(scratching)
+
+		if (scratching)
 		{
-			if(currentAction != SCRATCHING)
+			if (currentAction != SCRATCHING)
 			{
 				currentAction = SCRATCHING;
 				animation.setFrames(sprites.get(SCRATCHING));
@@ -207,28 +207,28 @@ public class Player extends MapObject
 				width = 60;
 			}
 		}
-		else if(firing)
+		else if (firing)
 		{
-			if(currentAction != FIREBALL)
+			if (currentAction != FIREBALL)
 			{
 				currentAction = FIREBALL;
 				animation.setFrames(sprites.get(FIREBALL));
 				animation.setDelay(30);
 			}
 		}
-		else if(dy > 0)
+		else if (dy > 0)
 		{
-			if(gliding)
+			if (gliding)
 			{
-				if(currentAction != GLIDING)
+				if (currentAction != GLIDING)
 				{
 					currentAction = GLIDING;
 					animation.setFrames(sprites.get(GLIDING));
 					animation.setDelay(100);
 					width = 30;
 				}
-			}	
-			else if(currentAction != FALLING)
+			}
+			else if (currentAction != FALLING)
 			{
 				currentAction = FALLING;
 				animation.setFrames(sprites.get(FALLING));
@@ -236,9 +236,9 @@ public class Player extends MapObject
 				width = 30;
 			}
 		}
-		else if(dy < 0)
+		else if (dy < 0)
 		{
-			if(currentAction != JUMPING)
+			if (currentAction != JUMPING)
 			{
 				currentAction = JUMPING;
 				animation.setFrames(sprites.get(JUMPING));
@@ -246,9 +246,9 @@ public class Player extends MapObject
 				width = 30;
 			}
 		}
-		else if(left || right)
+		else if (left || right)
 		{
-			if(currentAction != WALKING)
+			if (currentAction != WALKING)
 			{
 				currentAction = WALKING;
 				animation.setFrames(sprites.get(WALKING));
@@ -258,7 +258,7 @@ public class Player extends MapObject
 		}
 		else
 		{
-			if(currentAction != IDLE)
+			if (currentAction != IDLE)
 			{
 				currentAction = IDLE;
 				animation.setFrames(sprites.get(IDLE));
@@ -266,78 +266,75 @@ public class Player extends MapObject
 				width = 30;
 			}
 		}
-		
+
 		animation.update();
-		
-		if(currentAction != SCRATCHING && currentAction != FIREBALL)
+
+		if (currentAction != SCRATCHING && currentAction != FIREBALL)
 		{
-			if(right)
+			if (right)
 			{
 				facingRight = true;
 			}
-			if(left)
+			if (left)
 			{
 				facingRight = false;
 			}
 		}
-		
-		
+
 	}
-	
+
 	private void getNextPosition()
 	{
-		if(left)
+		if (left)
 		{
 			dx -= moveSpeed;
-			if(dx < -maxSpeed)
+			if (dx < -maxSpeed)
 			{
 				dx = -maxSpeed;
 			}
 		}
-		else if(right)
+		else if (right)
 		{
 			dx += moveSpeed;
-			if(dx > maxSpeed)
+			if (dx > maxSpeed)
 			{
 				dx = maxSpeed;
 			}
 		}
 		else
 		{
-			if(dx > 0)
+			if (dx > 0)
 			{
 				dx -= stopSpeed;
-				if(dx < 0)
+				if (dx < 0)
 				{
 					dx = 0;
 				}
 			}
-			if(dx < 0)
+			if (dx < 0)
 			{
 				dx += stopSpeed;
-				if(dx > 0)
+				if (dx > 0)
 				{
 					dx = 0;
 				}
 			}
 		}
-		
-		if((currentAction == SCRATCHING || currentAction == FIREBALL) &&
-				!(jumping || falling)				
-				)
+
+		if ((currentAction == SCRATCHING || currentAction == FIREBALL) && !(jumping || falling))
 		{
 			dx = 0;
 		}
-		
+
 		if (jumping && !falling)
 		{
 			dy = jumpStart;
 			falling = true;
 		}
-		
-		if(falling)
+
+		if (falling)
 		{
-			if(dy > 0 && gliding)
+			if (dy > 0 && gliding)
 			{
 				dy += fallSpeed * 0.1;
 			}
@@ -345,51 +342,88 @@ public class Player extends MapObject
 			{
 				dy += fallSpeed;
 			}
-			
-			
-			if(dy > 0)
+
+			if (dy > 0)
 			{
 				jumping = false;
 			}
-			
-			if(dy < 0 && !jumping)
+
+			if (dy < 0 && !jumping)
 			{
 				dy += stopJumpSpeed;
 			}
-			
-			if(dy > maxFallSpeed)
+
+			if (dy > maxFallSpeed)
 			{
 				dy = maxFallSpeed;
 			}
 		}
 	}
-	
+
 	public void draw(Graphics2D g)
 	{
 		setMapPosition();
-		
+
 		for (int i = 0; i < fireBalls.size(); i++)
 		{
 			fireBalls.get(i).draw(g);
 		}
-		
-		if(flinching)
+
+		if (flinching)
 		{
-			long elapsed =
-					(System.nanoTime() - flinchTime) / 1000000;
-			if(elapsed / 100 % 2 == 0)
+			long elapsed = (System.nanoTime() - flinchTime) / 1000000;
+			if (elapsed / 100 % 2 == 0)
 			{
 				return;
 			}
 		}
-		
+
 		super.draw(g);
+
+		// g.drawString("x: " + String.valueOf(x),0, 10);
+		// g.drawString("y: " + String.valueOf(y),0, 20);
+		// g.drawString("xmap: " + String.valueOf(xmap),0, 30);
+		// g.drawString("ymap: " + String.valueOf(ymap),0, 40);
+	}
+
+	public void checkAttack(ArrayList<Enemy> enemies)
+	{		
 		
 		
-	//	g.drawString("x: " + String.valueOf(x),0, 10);
-		//g.drawString("y: " + String.valueOf(y),0, 20);
-		//g.drawString("xmap: " + String.valueOf(xmap),0, 30);
-		//g.drawString("ymap: " + String.valueOf(ymap),0, 40);
+		for(int i = 0; i < fireBalls.size(); i++)
+		{
+			Enemy e = enemies.get(i);
+			if (scratching)
+			{
+				if (facingRight)
+				{
+					if (e.getX() > x && e.getX() < x + scratchRange && e.getY() > y - height / 2
+							&& e.getY() < y + height / 2)
+					{
+						e.hit(scratchDamage);
+					}
+				}
+				else
+				{
+					if (e.getX() < x && e.getX() > x - scratchRange && e.getY() > y - height / 2
+							&& e.getY() < y + height / 2)
+					{
+						e.hit(scratchDamage);
+					}
+				}
+			}
+			
+			//fireballs
+			for(int j = 0; j < fireBalls.size(); j++)
+			{
+				if (fireBalls.get(j).intersects(e) )
+				{
+					e.hit(fireBallDamage);
+					fireBalls.get(j).setHit();
+					break;
+				}
+			}
+		}
 	}
 
 }
