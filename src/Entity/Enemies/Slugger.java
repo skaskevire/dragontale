@@ -26,7 +26,7 @@ public class Slugger extends Enemy{
 		cwidth = 20;
 		cheight = 20;
 		
-		health = maxHealth = 2;
+		health = maxHealth = 10;
 		
 		damage = 1;		
 		
@@ -120,10 +120,10 @@ public class Slugger extends Enemy{
 	
 	public void draw(Graphics2D g)
 	{
-		if(notOnScreen())
-		{
-			return;
-		}
+	//	if(notOnScreen())
+	//	{
+	//		return;
+	//	}
 		setMapPosition();
 		super.draw(g);
 	}

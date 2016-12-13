@@ -4,9 +4,11 @@ package Entity;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import Audio.AudioPlayer;
 import TileMap.TileMap;
 
 public class Player extends MapObject
@@ -41,6 +43,8 @@ public class Player extends MapObject
 	private static final int GLIDING = 4;
 	private static final int FIREBALL = 5;
 	private static final int SCRATCHING = 6;
+	
+	private HashMap<String, AudioPlayer> sfx;
 
 	public Player(TileMap tm)
 	{
@@ -66,9 +70,9 @@ public class Player extends MapObject
 		fire = maxFire = 2500;
 
 		fireCost = 200;
-		fireBallDamage = 5;
+		fireBallDamage = 2;
 
-		scratchDamage = 8;
+		scratchDamage = 2;
 		scratchRange = 40;
 
 		fireBalls = new ArrayList<FireBall>();
@@ -110,6 +114,10 @@ public class Player extends MapObject
 		currentAction = IDLE;
 		animation.setFrames(sprites.get(IDLE));
 		animation.setDelay(400);
+		
+		sfx = new HashMap<String, AudioPlayer>();
+		sfx.put("jump", new AudioPlayer("/SFX/jump.mp3"));
+		sfx.put("scratch", new AudioPlayer("/SFX/scratch.mp3"));
 
 	}
 
@@ -196,11 +204,21 @@ public class Player extends MapObject
 				i--;
 			}
 		}
+		
+		if(flinching)
+		{
+			long elapsed = (System.nanoTime() - flinchTime) / 1000000;
+			if(elapsed > 1000)			
+			{
+				flinching = false;
+			}
+		}
 
 		if (scratching)
 		{
 			if (currentAction != SCRATCHING)
 			{
+				sfx.get("scratch").play();
 				currentAction = SCRATCHING;
 				animation.setFrames(sprites.get(SCRATCHING));
 				animation.setDelay(50);
@@ -328,6 +346,7 @@ public class Player extends MapObject
 
 		if (jumping && !falling)
 		{
+			sfx.get("jump").play();
 			dy = jumpStart;
 			falling = true;
 		}
@@ -390,7 +409,7 @@ public class Player extends MapObject
 	{		
 		
 		
-		for(int i = 0; i < fireBalls.size(); i++)
+		for(int i = 0; i < enemies.size(); i++)
 		{
 			Enemy e = enemies.get(i);
 			if (scratching)
@@ -423,7 +442,31 @@ public class Player extends MapObject
 					break;
 				}
 			}
+			
+			//check for enemy collision
+			
+			if(intersects(e))
+			{
+				hit(e.getDamage());
+			}
+			
 		}
+	}
+	
+	public void hit(int damage)
+	{
+		if(flinching)
+		{
+			return;
+		}
+		health -= damage;
+		if(health < 0) health = 0;
+		if(health == 0)
+		{
+			dead = true;
+		}
+		flinching = true;
+		flinchTime = System.nanoTime();
 	}
 
 }

@@ -1,10 +1,13 @@
 package GameState;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import Audio.AudioPlayer;
 import Entity.Enemy;
+import Entity.Explosion;
 import Entity.HUD;
 import Entity.Player;
 import Entity.Enemies.Slugger;
@@ -18,8 +21,9 @@ public class Level1State extends GameState
 	private Background bg;
 	private Player player;
 	private ArrayList<Enemy> enemies;
+	private ArrayList<Explosion> explosions;
 	private HUD hud;
-	
+	AudioPlayer bgMusic;
 	public Level1State(GameStateManager gsm)
 	{
 		this.gsm = gsm;
@@ -43,13 +47,34 @@ public class Level1State extends GameState
 		
 		player.setPosition(100, 100);
 		
-		enemies = new ArrayList<Enemy>();
-		Slugger s = new Slugger(tileMap);
-		s.setPosition(100,100);
-
-		enemies.add(s);
-
+		populateEnemies();
+		
+		explosions = new ArrayList<Explosion>();
 		hud = new HUD(player);
+		bgMusic = new AudioPlayer("/Music/level1-1.mp3");
+		bgMusic.play();
+	}
+	
+	private void populateEnemies()
+	{
+		enemies = new ArrayList<Enemy>();
+		Point[] points = new Point[] {
+				new Point(100, 100),
+				new Point(860, 200),
+				new Point(1625, 200),
+				new Point(1680, 200),
+				new Point(1800, 200)
+		};
+		Slugger s;
+		for (int i = 0; i < points.length; i++)
+		{
+			s = new Slugger(tileMap);
+			s.setPosition(points[i].x, points[i].y);
+			enemies.add(s);
+		}
+		
+		
+		
 	}
 
 	@Override
@@ -68,10 +93,21 @@ public class Level1State extends GameState
 		
 		for (int i = 0; i < enemies.size(); i++)
 		{
+			Enemy e = enemies.get(i);
 			enemies.get(i).update();
-			if(enemies.get(i).isDead())
+			if(e.isDead())
 			{
 				enemies.remove(i);
+				i--;
+				explosions.add(new Explosion(e.getX(), e.getY()));
+			}
+		}
+		
+		for (int i = 0; i < explosions.size(); i++) {
+			explosions.get(i).update();
+			if(explosions.get(i).shouldRemove())
+			{
+				explosions.remove(i);
 				i--;
 			}
 		}
@@ -87,6 +123,13 @@ public class Level1State extends GameState
 		for (int i = 0; i < enemies.size(); i++) {
 			enemies.get(i).draw(g);
 		}
+		
+		for (int i = 0; i < explosions.size(); i++) {
+			explosions.get(i).setMapPosition(
+					(int)tileMap.getX(), (int)tileMap.getY());
+			explosions.get(i).draw(g);
+		}
+		
 		hud.draw(g);
 		
 	}
