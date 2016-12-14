@@ -1,9 +1,19 @@
 package GameState;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.Window;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import javax.swing.JFrame;
 
 import TileMap.Background;
 
@@ -91,13 +101,29 @@ public class MenuState extends GameState
 		
 		if(currentChoice == 1)
 		{
-			//help
+			try {
+				openWebpage(new URL("https://github.com/skaskevire/dragontale").toURI());
+			} catch (MalformedURLException | URISyntaxException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if(currentChoice == 2)
 		{
-			//exit
+			Frame frame = Frame.getFrames()[0];
+			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		}
+	}
+	
+	 private void openWebpage(URI uri) {
+	    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+	    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+	        try {
+	            desktop.browse(uri);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
 
 	@Override

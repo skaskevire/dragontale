@@ -59,11 +59,15 @@ public class Level1State extends GameState
 	{
 		enemies = new ArrayList<Enemy>();
 		Point[] points = new Point[] {
-				new Point(100, 100),
 				new Point(860, 200),
 				new Point(1625, 200),
 				new Point(1680, 200),
-				new Point(1800, 200)
+				new Point(1800, 200),
+				new Point(2800, 200),
+				new Point(2850, 200),
+				new Point(2900, 200),
+				new Point(2950, 200),
+				new Point(3000, 200)
 		};
 		Slugger s;
 		for (int i = 0; i < points.length; i++)
@@ -80,6 +84,19 @@ public class Level1State extends GameState
 	@Override
 	public void update()
 	{
+		if(enemies.isEmpty())
+		{
+			bgMusic.stop();
+			new AudioPlayer("/Music/win.mp3").play();
+			gsm.setState(GameStateManager.MENUSTATE);
+		}
+		if(player.isDead())
+		{
+			bgMusic.stop();
+			new AudioPlayer("/Music/fail.mp3").play();
+			
+			gsm.setState(GameStateManager.MENUSTATE);
+		}
 		player.update();
 		tileMap.setPosition(				
 				GamePanel.WIDTH / 2 - player.getX(),

@@ -19,6 +19,10 @@ public class Player extends MapObject
 	private int fire;
 	private int maxFire;
 	private boolean dead;
+	public boolean isDead() {
+		return dead;
+	}
+
 	private boolean flinching;
 	private long flinchTime;
 
@@ -159,7 +163,14 @@ public class Player extends MapObject
 	public void update()
 	{
 		getNextPosition();
-		checkTileMapCollision();
+		try{
+			checkTileMapCollision();
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			dead = true;
+		}
+		
 		setPosition(xtemp, ytemp);
 
 		if (currentAction == SCRATCHING)
