@@ -10,6 +10,7 @@ import Entity.Enemy;
 import Entity.Explosion;
 import Entity.HUD;
 import Entity.Player;
+import Entity.Enemies.Hrum;
 import Entity.Enemies.Slugger;
 import Main.GamePanel;
 import TileMap.Background;
@@ -77,8 +78,9 @@ public class Level1State extends GameState
 			enemies.add(s);
 		}
 		
-		
-		
+		Hrum h = new Hrum(tileMap);
+		h.setPosition(3100, 100);
+		enemies.add(h);		
 	}
 
 	@Override

@@ -38,10 +38,10 @@ public class Player extends MapObject
 	private boolean gliding;
 
 	private ArrayList<BufferedImage[]> sprites;
-	private final int[] numFrames = { 2, 8, 1, 2, 4, 2, 5 };
+	private final int[] numFrames = { 8, 8, 1, 2, 4, 2, 5 };
 
 	private static final int IDLE = 0;
-	private static final int WALKING = 1;
+	private static final int WALKING = 1; 
 	private static final int JUMPING = 2;
 	private static final int FALLING = 3;
 	private static final int GLIDING = 4;
@@ -84,7 +84,7 @@ public class Player extends MapObject
 		try
 		{
 			BufferedImage spritesheet = ImageIO
-					.read(getClass().getResourceAsStream("/Sprites/Player/playersprites.gif"));
+					.read(getClass().getResourceAsStream("/Sprites/Player/playersprites.png"));
 
 			sprites = new ArrayList<BufferedImage[]>();
 			for (int i = 0; i < 7; i++)

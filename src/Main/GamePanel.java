@@ -113,10 +113,83 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 			{
 				e.printStackTrace();
 			}
+			
+			
+			System.out.println(System.nanoTime() - start);
 		}
 		
 	}
 	
+	
+	/* 
+	 @Override
+	public void run()
+	{
+		init();
+		
+		long beforeTime = System.nanoTime();
+		long afterTime;
+		long timeDiff;
+		long overSleepTime = 0L;
+		long sleepTime = 0L;
+		long excess = 0L;
+		int noDelays = 0;
+		int NO_DELAYS_PER_YEILD = 5;
+		int MAX_FRAME_SKIPS = 5;
+
+		while(running)
+		{	
+			long start = System.nanoTime();
+			update();
+			draw();
+			drawToScreen();
+			
+			afterTime = System.nanoTime();
+			timeDiff = afterTime - beforeTime;
+			sleepTime = ( targetTime*1000000 - timeDiff ) - overSleepTime;
+			if(sleepTime > 0)
+			{
+				try
+				{
+				Thread.sleep(sleepTime/1000000L);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				
+				overSleepTime = ( System.nanoTime() - afterTime ) - sleepTime;
+			}
+			else
+			{
+				excess -= sleepTime;
+				overSleepTime = 0;
+				
+				if(++noDelays >= NO_DELAYS_PER_YEILD)
+				{
+					Thread.yield();
+					noDelays = 0;
+				}
+			}
+			
+			beforeTime = System.nanoTime();
+			
+			int skips = 0;
+			
+			while ((excess > targetTime*1000000) && (skips < MAX_FRAME_SKIPS))
+			{
+				excess -= targetTime*1000000;
+				update();
+				skips ++;				
+			}					
+			
+		System.out.println(System.nanoTime() - start);	
+		System.out.println(overSleepTime);	
+		}
+		
+	}
+	
+	*/
 	private void update()
 	{
 		gameStateManager.update();
