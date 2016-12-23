@@ -5,37 +5,34 @@ import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
-import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
-import javax.swing.JFrame;
 
 import TileMap.Background;
 
 public class MenuState extends GameState
 {
-	private Background bg;
+	protected Background bg;
 	
-	private int currentChoice = 0;
-	private String [] options = 
-		{
-			"Start",
-			"Help",
-			"Quit"
-		};
+	protected int currentChoice = 0;
+	protected List<String> options;
 	
-	private Color titleColor;
-	private Font titleFont;
-	private Font font;
+	protected Color titleColor;
+	protected Font titleFont;
+	protected Font font;
 	
 	public MenuState(GameStateManager gsm)
 	{
 		this.gsm = gsm;
+		
+		options = Arrays.asList("Start", "Help", "Quit");
 		
 		try
 		{
@@ -76,7 +73,7 @@ public class MenuState extends GameState
 		g.setFont(font);
 		
 		
-		for (int i = 0; i < options.length; i++)
+		for (int i = 0; i < options.size(); i++)
 		{
 			if( i == currentChoice)
 			{
@@ -86,7 +83,7 @@ public class MenuState extends GameState
 			{
 				g.setColor(Color.RED);
 			}
-			g.drawString(options[i], 145, 140 + i * 15);
+			g.drawString(options.get(i), 145, 140 + i * 15);
 		}
 		
 	}
@@ -96,7 +93,7 @@ public class MenuState extends GameState
 	{
 		if(currentChoice == 0)
 		{
-			gsm.setState(GameStateManager.LEVEL1STATE);
+			gsm.setState(GameStateManager.GAMEMODECHOOSESTATE);
 		}
 		
 		if(currentChoice == 1)
@@ -138,13 +135,13 @@ public class MenuState extends GameState
 			currentChoice--;
 			if(currentChoice == -1)
 			{
-				currentChoice = options.length - 1;
+				currentChoice = options.size() - 1;
 			}
 		}
 		if(k == KeyEvent.VK_DOWN)
 		{
 			currentChoice++;
-			if(currentChoice == options.length)
+			if(currentChoice == options.size())
 			{
 				currentChoice = 0;
 			}

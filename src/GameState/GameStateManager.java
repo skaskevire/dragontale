@@ -6,9 +6,11 @@ public class GameStateManager
 	private GameState[] gameStates;
 	private int currentState;
 	
-	public static final int NUMGAMESTATES = 2;
+	public static final int NUMGAMESTATES = 4;
 	public static final int MENUSTATE = 0;
 	public static final int LEVEL1STATE = 1;
+	public static final int GAMEMODECHOOSESTATE = 3;
+	public static final int GODSTATE = 2;
 	
 	public GameStateManager()
 	{
@@ -28,7 +30,15 @@ public class GameStateManager
 		}
 		if(state == LEVEL1STATE)
 		{
-			gameStates[state] = new Level1State(this);
+			gameStates[state] = new Level1State(this, "dragon");
+		}
+		if(state == GAMEMODECHOOSESTATE)
+		{
+			gameStates[state] = new GameModeChooseState(this);
+		}
+		if(state == GODSTATE)
+		{
+			gameStates[state] = new Level1State(this, "girl");
 		}
 	}
 	

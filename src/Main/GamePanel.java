@@ -115,7 +115,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 			}
 			
 			
-			System.out.println(System.nanoTime() - start);
 		}
 		
 	}

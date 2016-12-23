@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import javax.naming.OperationNotSupportedException;
+
 import Audio.AudioPlayer;
 import Entity.Enemy;
 import Entity.Explosion;
@@ -25,18 +27,31 @@ public class Level1State extends GameState
 	private ArrayList<Explosion> explosions;
 	private HUD hud;
 	AudioPlayer bgMusic;
-	public Level1State(GameStateManager gsm)
+	public Level1State(GameStateManager gsm, String playerType)
 	{
 		this.gsm = gsm;
-		init();
+		init(playerType);
 	}
 
 	@Override
 	public void init()
 	{
+		//
+	}
+	
+	private void init(String playerType)
+	{
 		tileMap = new TileMap(30);
 		tileMap.loadTiles("/Tilesets/grasstileset.gif");
-		tileMap.loadMap("/Maps/level1-1.map");
+		if(playerType == "dragon")
+		{
+			tileMap.loadMap("/Maps/level1-1.map");
+		}
+		if(playerType == "girl")
+		{
+			tileMap.loadMap("/Maps/god.map");
+		}
+		
 		tileMap.setPosition(0, 0);	
 		tileMap.setTween(0.07);
 		
@@ -44,7 +59,22 @@ public class Level1State extends GameState
 		bg = new Background("/Backgrounds/grassbg1.gif", 0.1);
 		
 		
-		player = new Player(tileMap);
+		
+		
+		
+		
+		
+		if(playerType == "dragon")
+		{
+			 int[] numDragonFrames = { 2, 8, 1, 2, 4, 2, 5 };			 
+			 player = new Player(tileMap,"/Sprites/Player/playersprites.gif",numDragonFrames);
+		}
+		if(playerType == "girl")
+		{
+			 int[] numGirlFrames = { 8, 8, 1, 2, 4, 2, 5 };
+			 player = new Player(tileMap,"/Sprites/Player/playersprites.png",numGirlFrames);
+			 player.setGod(true);
+		}
 		
 		player.setPosition(100, 100);
 		

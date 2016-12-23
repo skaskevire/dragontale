@@ -13,6 +13,16 @@ import TileMap.TileMap;
 
 public class Player extends MapObject
 {
+	private boolean god;
+	public boolean isGod()
+	{
+		return god;
+	}
+
+	public void setGod(boolean god)
+	{
+		this.god = god;
+	}
 
 	private int health;
 	private int maxHealth;
@@ -38,7 +48,6 @@ public class Player extends MapObject
 	private boolean gliding;
 
 	private ArrayList<BufferedImage[]> sprites;
-	private final int[] numFrames = { 8, 8, 1, 2, 4, 2, 5 };
 
 	private static final int IDLE = 0;
 	private static final int WALKING = 1; 
@@ -50,7 +59,7 @@ public class Player extends MapObject
 	
 	private HashMap<String, AudioPlayer> sfx;
 
-	public Player(TileMap tm)
+	public Player(TileMap tm, String skinPicturePath, int[] numFrames)
 	{
 		super(tm);
 
@@ -84,7 +93,7 @@ public class Player extends MapObject
 		try
 		{
 			BufferedImage spritesheet = ImageIO
-					.read(getClass().getResourceAsStream("/Sprites/Player/playersprites.png"));
+					.read(getClass().getResourceAsStream(skinPicturePath));
 
 			sprites = new ArrayList<BufferedImage[]>();
 			for (int i = 0; i < 7; i++)
@@ -470,7 +479,11 @@ public class Player extends MapObject
 		{
 			return;
 		}
-		health -= damage;
+		
+		if(!isGod())
+		{
+			health -= damage;
+		}		
 		if(health < 0) health = 0;
 		if(health == 0)
 		{
