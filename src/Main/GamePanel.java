@@ -1,5 +1,6 @@
 package Main;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -7,12 +8,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+
+import com.hypefiend.javagamebook.common.GameEvent;
+import com.hypefiend.javagamebook.common.GameEventDefault;
 
 import GameState.GameStateManager;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener
 {
+	private static final long serialVersionUID = 4294956057709600805L;
 	public static int WIDTH = 320;
 	public static int HEIGHT = 240;
 	public static final int SCALE = 2;
@@ -23,20 +30,30 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 	private long targetTime = 1000 / FPS;
 	
 	private BufferedImage image;
-	private Graphics2D g;
+	private Graphics2D g;	
+	 /**
+     * just use the default GameEvent class
+     */
+    public GameEvent createGameEvent() {
+	return new GameEventDefault();
+    }
+    
+	 public GameEvent createDisconnectEvent(String reason) {
+			return new GameEventDefault(GameEventDefault.S_DISCONNECT, reason);
+		    }
 	
-	
-	private GameStateManager gameStateManager;
-	
-	public GamePanel()
+	public GamePanel(String [] args)
 	{
+
+
+
 		super();
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		setFocusable(true);
-		requestFocus();
+		requestFocus();	
 	}
 	
-	@Override
+	@Override	
 	public void addNotify()
 	{
 		super.addNotify();
@@ -51,15 +68,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 	@Override
 	public void keyPressed(KeyEvent arg0)
 	{
-		gameStateManager.keyPressed(arg0.getKeyCode());
+		GameStateManager.getInstance().keyPressed(arg0.getKeyCode());
 		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0)
 	{
-		gameStateManager.keyReleased(arg0.getKeyCode());
-		
+		GameStateManager.getInstance().keyReleased(arg0.getKeyCode());		
 	}
 
 	@Override
@@ -76,14 +92,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 		g = (Graphics2D) image.getGraphics();
 		
 		running = true;
-		
-		gameStateManager = new GameStateManager();
 	}
 
 	@Override
 	public void run()
 	{
 		init();
+		GameStateManager.getInstance().setState(GameStateManager.MENUSTATE);
 		
 		long start;
 		long elapsed;
@@ -92,11 +107,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 		while(running)
 		{
 			
-			start = System.nanoTime();
-			
+			start = System.nanoTime();		
+   
 			update();
 			draw();
-			drawToScreen();
+			drawToScreen();	
 			
 			elapsed = System.nanoTime() - start;
 			
@@ -119,84 +134,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 		
 	}
 	
-	
-	/* 
-	 @Override
-	public void run()
-	{
-		init();
-		
-		long beforeTime = System.nanoTime();
-		long afterTime;
-		long timeDiff;
-		long overSleepTime = 0L;
-		long sleepTime = 0L;
-		long excess = 0L;
-		int noDelays = 0;
-		int NO_DELAYS_PER_YEILD = 5;
-		int MAX_FRAME_SKIPS = 5;
-
-		while(running)
-		{	
-			long start = System.nanoTime();
-			update();
-			draw();
-			drawToScreen();
-			
-			afterTime = System.nanoTime();
-			timeDiff = afterTime - beforeTime;
-			sleepTime = ( targetTime*1000000 - timeDiff ) - overSleepTime;
-			if(sleepTime > 0)
-			{
-				try
-				{
-				Thread.sleep(sleepTime/1000000L);
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-				}
-				
-				overSleepTime = ( System.nanoTime() - afterTime ) - sleepTime;
-			}
-			else
-			{
-				excess -= sleepTime;
-				overSleepTime = 0;
-				
-				if(++noDelays >= NO_DELAYS_PER_YEILD)
-				{
-					Thread.yield();
-					noDelays = 0;
-				}
-			}
-			
-			beforeTime = System.nanoTime();
-			
-			int skips = 0;
-			
-			while ((excess > targetTime*1000000) && (skips < MAX_FRAME_SKIPS))
-			{
-				excess -= targetTime*1000000;
-				update();
-				skips ++;				
-			}					
-			
-		System.out.println(System.nanoTime() - start);	
-		System.out.println(overSleepTime);	
-		}
-		
-	}
-	
-	*/
 	private void update()
 	{
-		gameStateManager.update();
+		GameStateManager.getInstance().update();
 	}
 	
 	private void draw()
 	{
-		gameStateManager.draw(g);
+		GameStateManager.getInstance().draw(g, this);
 	}
 	
 	private void drawToScreen()

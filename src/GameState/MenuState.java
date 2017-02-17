@@ -14,8 +14,10 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JPanel;
 
-import TileMap.Background;
+import server.tileMap.Background;
+
 
 public class MenuState extends GameState
 {
@@ -28,10 +30,8 @@ public class MenuState extends GameState
 	protected Font titleFont;
 	protected Font font;
 	
-	public MenuState(GameStateManager gsm)
-	{
-		this.gsm = gsm;
-		
+	public MenuState()
+	{	
 		options = Arrays.asList("Start", "Help", "Quit");
 		
 		try
@@ -64,7 +64,7 @@ public class MenuState extends GameState
 	}
 
 	@Override
-	public void draw(Graphics2D g)
+	public void draw(Graphics2D g, JPanel panel)
 	{
 		bg.draw(g);
 		
@@ -93,7 +93,7 @@ public class MenuState extends GameState
 	{
 		if(currentChoice == 0)
 		{
-			gsm.setState(GameStateManager.GAMEMODECHOOSESTATE);
+			GameStateManager.getInstance().setState(GameStateManager.GAMEMODECHOOSESTATE);
 		}
 		
 		if(currentChoice == 1)
@@ -151,6 +151,41 @@ public class MenuState extends GameState
 
 	@Override
 	public void keyReleased(int k)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updatePlayerStates(String data, String playerId)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addNewPlayer(String pid)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getPlayerCoordinates()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getEnemyCoordinates()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addOrUpdateEnemies(String data)
 	{
 		// TODO Auto-generated method stub
 		

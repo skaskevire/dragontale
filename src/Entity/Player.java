@@ -5,11 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
 import Audio.AudioPlayer;
-import TileMap.TileMap;
+import server.tileMap.TileMap;
 
 public class Player extends MapObject
 {
@@ -36,16 +37,14 @@ public class Player extends MapObject
 	private boolean flinching;
 	private long flinchTime;
 
-	private boolean firing;
+
 	private int fireCost;
 	private int fireBallDamage;
 	private ArrayList<FireBall> fireBalls;
 
-	private boolean scratching;
 	private int scratchDamage;
 	private int scratchRange;
 
-	private boolean gliding;
 
 	private ArrayList<BufferedImage[]> sprites;
 
@@ -154,21 +153,6 @@ public class Player extends MapObject
 		return maxFire;
 	}
 
-	public void setFiring()
-	{
-		firing = true;
-	}
-
-	public void setScratching()
-	{
-		scratching = true;
-	}
-
-	public void setGliding(boolean b)
-	{
-		gliding = b;
-	}
-
 	public void update()
 	{
 		getNextPosition();
@@ -186,7 +170,7 @@ public class Player extends MapObject
 		{
 			if (animation.hasPlayedOnce())
 			{
-				scratching = false;
+				keyEvents.remove("scratching");
 			}
 		}
 
@@ -194,7 +178,7 @@ public class Player extends MapObject
 		{
 			if (animation.hasPlayedOnce())
 			{
-				firing = false;
+				keyEvents.remove("firing");
 			}
 		}
 
@@ -203,7 +187,7 @@ public class Player extends MapObject
 		{
 			fire = maxFire;
 		}
-		if (firing && currentAction != FIREBALL)
+		if (keyEvents.contains("firing") && currentAction != FIREBALL)
 		{
 			if (fire > fireCost)
 			{
@@ -234,7 +218,7 @@ public class Player extends MapObject
 			}
 		}
 
-		if (scratching)
+		if (keyEvents.contains("scratching"))
 		{
 			if (currentAction != SCRATCHING)
 			{
@@ -245,7 +229,7 @@ public class Player extends MapObject
 				width = 60;
 			}
 		}
-		else if (firing)
+		else if (keyEvents.contains("firing"))
 		{
 			if (currentAction != FIREBALL)
 			{
@@ -256,7 +240,7 @@ public class Player extends MapObject
 		}
 		else if (dy > 0)
 		{
-			if (gliding)
+			if (keyEvents.contains("gliding"))
 			{
 				if (currentAction != GLIDING)
 				{
@@ -284,7 +268,7 @@ public class Player extends MapObject
 				width = 30;
 			}
 		}
-		else if (left || right)
+		else if (keyEvents.contains("left") || keyEvents.contains("right"))
 		{
 			if (currentAction != WALKING)
 			{
@@ -309,11 +293,11 @@ public class Player extends MapObject
 
 		if (currentAction != SCRATCHING && currentAction != FIREBALL)
 		{
-			if (right)
+			if (keyEvents.contains("right"))
 			{
 				facingRight = true;
 			}
-			if (left)
+			if (keyEvents.contains("left"))
 			{
 				facingRight = false;
 			}
@@ -323,7 +307,7 @@ public class Player extends MapObject
 
 	private void getNextPosition()
 	{
-		if (left)
+		if (keyEvents.contains("left"))
 		{
 			dx -= moveSpeed;
 			if (dx < -maxSpeed)
@@ -331,7 +315,7 @@ public class Player extends MapObject
 				dx = -maxSpeed;
 			}
 		}
-		else if (right)
+		else if (keyEvents.contains("right"))
 		{
 			dx += moveSpeed;
 			if (dx > maxSpeed)
@@ -359,12 +343,12 @@ public class Player extends MapObject
 			}
 		}
 
-		if ((currentAction == SCRATCHING || currentAction == FIREBALL) && !(jumping || falling))
+		if ((currentAction == SCRATCHING || currentAction == FIREBALL) && !(keyEvents.contains("jumping") || falling))
 		{
 			dx = 0;
 		}
 
-		if (jumping && !falling)
+		if (keyEvents.contains("jumping") && !falling)
 		{
 			sfx.get("jump").play();
 			dy = jumpStart;
@@ -373,7 +357,7 @@ public class Player extends MapObject
 
 		if (falling)
 		{
-			if (dy > 0 && gliding)
+			if (dy > 0 && keyEvents.contains("gliding"))
 			{
 				dy += fallSpeed * 0.1;
 			}
@@ -384,10 +368,10 @@ public class Player extends MapObject
 
 			if (dy > 0)
 			{
-				jumping = false;
+				keyEvents.remove("jumping");
 			}
 
-			if (dy < 0 && !jumping)
+			if (dy < 0 && !keyEvents.contains("jumping"))
 			{
 				dy += stopJumpSpeed;
 			}
@@ -425,14 +409,15 @@ public class Player extends MapObject
 		// g.drawString("ymap: " + String.valueOf(ymap),0, 40);
 	}
 
-	public void checkAttack(ArrayList<Enemy> enemies)
+	public void checkAttack(Map<String,Enemy> enemiesMap)
 	{		
 		
+		ArrayList<Enemy> enemies = new ArrayList<>(enemiesMap.values());
 		
 		for(int i = 0; i < enemies.size(); i++)
 		{
 			Enemy e = enemies.get(i);
-			if (scratching)
+			if (keyEvents.contains("scratching"))
 			{
 				if (facingRight)
 				{

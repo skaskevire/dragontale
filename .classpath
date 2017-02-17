@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="Libs/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="Libs/mp3spi1.9.5.jar"/>
 	<classpathentry kind="lib" path="Libs/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="D:/ch06src/lib/log4j-1.2.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

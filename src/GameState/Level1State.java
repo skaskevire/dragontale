@@ -4,8 +4,17 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import javax.naming.OperationNotSupportedException;
+import javax.swing.JPanel;
+
+import java.util.Set;
+
+
 
 import Audio.AudioPlayer;
 import Entity.Enemy;
@@ -15,21 +24,20 @@ import Entity.Player;
 import Entity.Enemies.Hrum;
 import Entity.Enemies.Slugger;
 import Main.GamePanel;
-import TileMap.Background;
-import TileMap.TileMap;
+import server.tileMap.Background;
+import server.tileMap.TileMap;
 
 public class Level1State extends GameState
 {	
 	private TileMap tileMap;
 	private Background bg;
 	private Player player;
-	private ArrayList<Enemy> enemies;
+	private Map<String,Enemy> enemies;
 	private ArrayList<Explosion> explosions;
 	private HUD hud;
 	AudioPlayer bgMusic;
-	public Level1State(GameStateManager gsm, String playerType)
+	public Level1State(String playerType)
 	{
-		this.gsm = gsm;
 		init(playerType);
 	}
 
@@ -88,7 +96,7 @@ public class Level1State extends GameState
 	
 	private void populateEnemies()
 	{
-		enemies = new ArrayList<Enemy>();
+		enemies = new HashMap<>();
 		Point[] points = new Point[] {
 				new Point(860, 200),
 				new Point(1625, 200),
@@ -105,12 +113,12 @@ public class Level1State extends GameState
 		{
 			s = new Slugger(tileMap);
 			s.setPosition(points[i].x, points[i].y);
-			enemies.add(s);
+			enemies.put(String.valueOf(i), s);
 		}
 		
 		Hrum h = new Hrum(tileMap);
 		h.setPosition(3100, 100);
-		enemies.add(h);		
+		enemies.put("rd2s", h);		
 	}
 
 	@Override
@@ -120,14 +128,13 @@ public class Level1State extends GameState
 		{
 			bgMusic.stop();
 			new AudioPlayer("/Music/win.mp3").play();
-			gsm.setState(GameStateManager.MENUSTATE);
+			GameStateManager.getInstance().setState(GameStateManager.MENUSTATE);
 		}
 		if(player.isDead())
 		{
 			bgMusic.stop();
 			new AudioPlayer("/Music/fail.mp3").play();
-			
-			gsm.setState(GameStateManager.MENUSTATE);
+			GameStateManager.getInstance().setState(GameStateManager.MENUSTATE);
 		}
 		player.update();
 		tileMap.setPosition(				
@@ -140,15 +147,16 @@ public class Level1State extends GameState
 		//attack enemies
 		player.checkAttack(enemies);
 		
-		for (int i = 0; i < enemies.size(); i++)
+		
+		
+		for(Entry<String, Enemy> enm : enemies.entrySet())
 		{
-			Enemy e = enemies.get(i);
-			enemies.get(i).update();
-			if(e.isDead())
+			enm.getValue().update();
+			if(enm.getValue().isDead())
 			{
-				enemies.remove(i);
-				i--;
-				explosions.add(new Explosion(e.getX(), e.getY()));
+				explosions.add(new Explosion(enm.getValue().getX(), enm.getValue().getY()));
+				enemies.remove(enm.getKey());
+				
 			}
 		}
 		
@@ -164,13 +172,16 @@ public class Level1State extends GameState
 	}
 
 	@Override
-	public void draw(Graphics2D g)
+	public void draw(Graphics2D g, JPanel panel)
 	{
 		bg.draw(g);		
 		tileMap.draw(g);	
 		player.draw(g);
-		for (int i = 0; i < enemies.size(); i++) {
-			enemies.get(i).draw(g);
+		
+		List<Enemy> el = new ArrayList<>(enemies.values());
+		
+		for (int i = 0; i < el.size(); i++) {
+			el.get(i).draw(g);
 		}
 		
 		for (int i = 0; i < explosions.size(); i++) {
@@ -188,35 +199,38 @@ public class Level1State extends GameState
 	{
 		if(k == KeyEvent.VK_LEFT)
 		{
-			player.setLeft(true);
+			player.addKeyEvent("left");
 		}
 		if(k == KeyEvent.VK_RIGHT)
 		{
-			player.setRight(true);
+			player.addKeyEvent("right");
 		}
 		if(k == KeyEvent.VK_UP)
 		{
-			player.setUp(true);
+			player.addKeyEvent("up");
 		}
 		if(k == KeyEvent.VK_DOWN)
 		{
-			player.setDown(true);
+			player.addKeyEvent("down");
 		}
 		if(k == KeyEvent.VK_W)
 		{
-			player.setJumping(true);
+			player.addKeyEvent("jumping");
 		}
 		if(k == KeyEvent.VK_E)
 		{
-			player.setGliding(true);
+		
+			player.addKeyEvent("gliding");
 		}
 		if(k == KeyEvent.VK_R)
 		{
-			player.setScratching();
+	
+			player.addKeyEvent("scratching");
 		}
 		if(k == KeyEvent.VK_F)
 		{
-			player.setFiring();
+	
+			player.addKeyEvent("firing");
 		}
 		
 	}
@@ -226,36 +240,87 @@ public class Level1State extends GameState
 	{
 		if(k == KeyEvent.VK_LEFT)
 		{
-			player.setLeft(false);
+	
+			player.removeKeyEvent("left");
 		}
 		if(k == KeyEvent.VK_RIGHT)
 		{
-			player.setRight(false);
+		
+			player.removeKeyEvent("right");
 		}
 		if(k == KeyEvent.VK_UP)
 		{
-			player.setUp(false);
+		
+			player.removeKeyEvent("up");
 		}
 		if(k == KeyEvent.VK_DOWN)
 		{
-			player.setDown(false);
+		
+			player.removeKeyEvent("down");
 		}
 		if(k == KeyEvent.VK_W)
 		{
-			player.setJumping(false);
+	
+			player.removeKeyEvent("jumping");
 		}
 		if(k == KeyEvent.VK_E)
 		{
-			player.setGliding(false);
+
+			player.removeKeyEvent("gliding");
 		}
 		if(k == KeyEvent.VK_R)
 		{
-			player.setScratching();
+
+			player.removeKeyEvent("scratching");
 		}
 		if(k == KeyEvent.VK_F)
 		{
-			player.setFiring();
+
+			player.removeKeyEvent("firing");
 		}
+		
+	}
+	
+	public String getPlayerCoordinates()
+	{
+		return player.getX() + "," + player.getXmap() + "," + player.getY() + "," + player.getYmap();
+	}
+	
+	@Override
+	public void updatePlayerStates(String data, String playerId)
+	{
+		
+		Set<String> keyEvents = new HashSet<String>();
+		
+		if(data != null)
+		{
+			String [] keyEventsArray = data.split(",");
+			for(int i = 0; i < keyEventsArray.length; i++)
+			{
+				keyEvents.add(keyEventsArray[i]);
+			}
+		}	
+		
+		player.setKeyEvents(keyEvents);
+	}
+	
+	
+	public void addNewPlayer(String pid)
+	{
+		
+	}
+
+	@Override
+	public String getEnemyCoordinates()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addOrUpdateEnemies(String data)
+	{
+		// TODO Auto-generated method stub
 		
 	}
 

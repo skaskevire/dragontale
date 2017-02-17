@@ -1,5 +1,5 @@
 
-package TileMap;
+package server.tileMap;
 
 import java.awt.image.BufferedImage;
 

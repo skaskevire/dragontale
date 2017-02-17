@@ -1,8 +1,9 @@
+/com/
 /Audio/
-/Entity/
+/Clientr/
+/Client/
 /GameState/
-/Music/
-/SFX/
-/Sprites/
+/Entity/
 /Main/
-/Maps/
+/server/
+/TileMap/

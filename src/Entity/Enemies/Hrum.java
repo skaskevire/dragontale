@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 
 import Entity.Animation;
 import Entity.Enemy;
-import TileMap.TileMap;
+import server.tileMap.TileMap;
 
 public class Hrum extends Enemy
 {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import TileMap.TileMap;
+import server.tileMap.TileMap;
 
 public class FireBall extends MapObject
 {

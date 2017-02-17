@@ -3,16 +3,95 @@ package Entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import Main.GamePanel;
-import TileMap.Tile;
-import TileMap.TileMap;
+import server.tileMap.Tile;
+import server.tileMap.TileMap;
 
 public abstract class MapObject
 {
+	public double getXmap()
+	{
+		return xmap;
+	}
+
+	public double getYmap()
+	{
+		return ymap;
+	}
+
+
+	protected Set<String> keyEvents = new HashSet<String>(){
+		private static final long serialVersionUID = -4438428606386159048L;
+		
+		public String toString() {
+			        Iterator<String> i = iterator();
+			        if (! i.hasNext())
+			            return "";
+			
+			        StringBuilder sb = new StringBuilder();
+			        for (;;) {
+			        	String e = i.next();
+			            sb.append(e);
+			            if (! i.hasNext())
+			                return sb.toString();
+			            sb.append(",");
+			        }
+			    }
+		
+	};
+	public Set<String> getKeyEvents()
+	{
+		return keyEvents;
+	}
+
+	public void addKeyEvent(String keyEvent)
+	{
+		keyEvents.add(keyEvent);
+	}
+	
+	public void setKeyEvents(Set<String> keyEvents)
+	{
+		this.keyEvents = keyEvents;
+	}
+	
+	public void removeKeyEvent(String keyEvent)
+	{
+		keyEvents.remove(keyEvent);
+	}
+
+
 	protected TileMap tileMap;
 	protected int tileSize;
 	protected double xmap;
+	
+	
+	
+	
+	public void setXmap(double xmap)
+	{
+		this.xmap = xmap;
+	}
+
+	public void setYmap(double ymap)
+	{
+		this.ymap = ymap;
+	}
+
+	public void setX(double x)
+	{
+		this.x = x;
+	}
+
+	public void setY(double y)
+	{
+		this.y = y;
+	}
+
+
 	protected double ymap;
 
 	protected double x;
