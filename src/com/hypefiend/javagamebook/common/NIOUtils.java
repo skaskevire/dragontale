@@ -2,7 +2,6 @@ package com.hypefiend.javagamebook.common;
 
 import java.nio.*;
 import java.nio.channels.*;
-import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * NIOUtils.java

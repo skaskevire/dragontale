@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import Main.GamePanel;
 import server.tileMap.Background;
 
 
@@ -164,7 +167,7 @@ public class MenuState extends GameState
 	}
 
 	@Override
-	public void addNewPlayer(String pid)
+	public void addNewPlayer(String pid, String skin)
 	{
 		// TODO Auto-generated method stub
 		
@@ -189,6 +192,14 @@ public class MenuState extends GameState
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void drawToScreen(Graphics graphics, BufferedImage image)
+	{
+		Graphics g2 = graphics;
+		g2.drawImage(image, 0, 0, GamePanel.WIDTH *  GamePanel.SCALE, GamePanel.HEIGHT * GamePanel.SCALE,  null);
+		g2.dispose();		
 	}
 
 }

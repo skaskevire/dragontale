@@ -1,6 +1,5 @@
 package Main;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,9 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 
 import com.hypefiend.javagamebook.common.GameEvent;
 import com.hypefiend.javagamebook.common.GameEventDefault;
@@ -42,11 +39,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 			return new GameEventDefault(GameEventDefault.S_DISCONNECT, reason);
 		    }
 	
-	public GamePanel(String [] args)
+	public GamePanel()
 	{
-
-
-
 		super();
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		setFocusable(true);
@@ -109,10 +103,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 			
 			start = System.nanoTime();		
    
-			update();
-			draw();
-			drawToScreen();	
-			
+				
+				update();
+				draw();
+				drawToScreen();	
+
+				
 			elapsed = System.nanoTime() - start;
 			
 			wait = targetTime - elapsed / 1000000;
@@ -145,9 +141,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener
 	}
 	
 	private void drawToScreen()
-	{
+	{		
 		Graphics g2 = getGraphics();
-		g2.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE,  null);
-		g2.dispose();
+		GameStateManager.getInstance().drawToScreen(g2, image);
 	}
 }

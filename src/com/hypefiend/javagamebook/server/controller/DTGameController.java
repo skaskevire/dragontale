@@ -13,8 +13,9 @@ import com.hypefiend.javagamebook.common.GameEventDefault;
 import com.hypefiend.javagamebook.common.Player;
 import com.hypefiend.javagamebook.common.PlayerDefault;
 import com.hypefiend.javagamebook.games.rps.RPSGame;
+import com.hypefiend.javagamebook.server.DTGCWorker;
 
-import GameState.GameStateManager;
+import GameState.ServerGameStateManager;
 import server.main.GamePanel;
 
 public class DTGameController extends GameController 
@@ -92,11 +93,11 @@ public class DTGameController extends GameController
 	{
 		switch (event.getType()) {
 		case GameEventDefault.S_MOVE_PLAYER:
-			GameStateManager.getInstance().addPlayerGameStates(event.getMessage(), event.getPlayerId());
+			ServerGameStateManager.getInstance().addPlayerGameStates(event.getMessage(), event.getPlayerId());
 			
 			break;
 		case GameEventDefault.S_UPDATE_PLAYER_COORDINATES:
-			String coordinatesToUpdate = GameStateManager.getInstance().getPlayerCoodrinates();
+			String coordinatesToUpdate = ServerGameStateManager.getInstance().getPlayerCoodrinates();
 			
 			Player p = gameServer.getPlayerById(event.getPlayerId());
 			sendEvent(new GameEventDefault(GameEventDefault.S_UPDATE_PLAYER_COORDINATES, coordinatesToUpdate), p);
@@ -107,7 +108,7 @@ public class DTGameController extends GameController
 		    
 		case GameEventDefault.S_UPDATE_ENEMY_COORDINATES:
 			
-			String csToUpdate = GameStateManager.getInstance().getEnemyCoodrinates();
+			String csToUpdate = ServerGameStateManager.getInstance().getEnemyCoodrinates();
 			
 			Player pl = gameServer.getPlayerById(event.getPlayerId());
 			sendEvent(new GameEventDefault(GameEventDefault.S_UPDATE_ENEMY_COORDINATES, csToUpdate), pl);
@@ -115,7 +116,7 @@ public class DTGameController extends GameController
 		    break;
 		    
 		case GameEventDefault.S_GAME_STATE_CHANGE:
-			GameStateManager.getInstance().setState(
+			ServerGameStateManager.getInstance().setState(
 							Integer.valueOf(event.getMessage()));
 		    login(event);
 		    break;
@@ -177,7 +178,7 @@ public class DTGameController extends GameController
 			// add to our list
 			players.put(pid, p);			
 			
-			GameStateManager.getInstance().addNewPlayer(pid);		
+			ServerGameStateManager.getInstance().addNewPlayer(pid, e.getMessage());		
 			
 			
 			// send player list

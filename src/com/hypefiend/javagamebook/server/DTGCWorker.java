@@ -1,10 +1,14 @@
-package com.hypefiend.javagamebook.server.controller;
+package com.hypefiend.javagamebook.server;
 
 import java.util.HashMap;
 
 import com.hypefiend.javagamebook.common.GameEventDefault;
+import com.hypefiend.javagamebook.common.Globals;
+import com.hypefiend.javagamebook.server.controller.DTGameController;
 
-import GameState.GameStateManager;
+import GameState.ServerGameStateManager;
+
+
 
 public class DTGCWorker implements Runnable
 {
@@ -23,12 +27,11 @@ public class DTGCWorker implements Runnable
 	{
 		while(true)
 		{
-			String coordinatesToUpdate = GameStateManager.getInstance().getPlayerCoodrinates();
-			String csToUpdate = GameStateManager.getInstance().getEnemyCoodrinates();
+			String coordinatesToUpdate = ServerGameStateManager.getInstance().getPlayerCoodrinates();
+			String csToUpdate = ServerGameStateManager.getInstance().getEnemyCoodrinates();
 	
-			if(players!=null)
+			if(!players.isEmpty())
 			{
-				//System.out.println(this.toString());
 				dtgc.sendBroadcastEvent(new GameEventDefault(GameEventDefault.S_UPDATE_ENEMY_COORDINATES, csToUpdate), players.values());
 				dtgc.sendBroadcastEvent(new GameEventDefault(GameEventDefault.S_UPDATE_PLAYER_COORDINATES, coordinatesToUpdate), players.values());
 			  
@@ -36,7 +39,7 @@ public class DTGCWorker implements Runnable
 			
 			try
 			{
-				Thread.sleep(10l);
+				Thread.sleep(Globals.CHANNEL_WRITE_SLEEP);
 			}
 			catch (InterruptedException e)
 			{

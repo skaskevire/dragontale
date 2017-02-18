@@ -1,7 +1,9 @@
 package GameState;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.net.ConnectException;
 import java.net.InetAddress;
@@ -85,7 +87,7 @@ public GameEvent createGameEvent() {
 
 	
 	
-	public MultiplayerClientState(String playerType)
+	public MultiplayerClientState(String playerType, String playerName, String address, String playerSkin)
 	{
 
 		
@@ -99,13 +101,13 @@ public GameEvent createGameEvent() {
 		writeBuffer = ByteBuffer.allocate(Globals.MAX_EVENT_SIZE );
 
 		try {
-		    serverAddress = InetAddress.getByName("10.6.94.81");
+		    serverAddress = InetAddress.getByName(address);
 		}
 		catch (UnknownHostException uhe) {
 	//	    log.error("unknown host: " + args[0]);
 		    System.exit(1);
 		}
-		this.playerId = "raman" + new Random().nextInt(93);
+		this.playerId = playerName + new Random().nextInt(93);
 
 		// connect to the server
 		if (!connect()) 
@@ -136,7 +138,7 @@ public GameEvent createGameEvent() {
 		}
 		
 		
-		login();
+		login(playerSkin);
 		try
 		{
 			Thread.sleep(1000L);
@@ -149,10 +151,11 @@ public GameEvent createGameEvent() {
 	}
 	
 	
-	 protected void login() {
+	 protected void login(String playerSkin) {
 			GameEvent e = new GameEventDefault(GameEventDefault.C_LOGIN);
 			e.setGameName("RPS");
 			e.setPlayerId(playerId);
+			e.setMessage(playerSkin);
 			writeEvent(e);
 	}
     /**
@@ -400,40 +403,52 @@ public GameEvent createGameEvent() {
 	
 
 	public void updatePlayerCoordinates(String data)
-	{		
-		String [] es = data.split(":");
-		for (int i = 0; i < es.length ; i++)
+	{	
+		if(data != null)
 		{
-			String [] playerFields = es[i].split(",");
-			
+			String [] es = data.split(":");
+			for (int i = 0; i < es.length ; i++)
+			{
+				String [] playerFields = es[i].split(",");
 				
-				
-				if(players.get(playerFields[0]) == null)
-				{		
-					Player player;
+					
+					
+					if(players.get(playerFields[0]) == null)
+					{		
+						Player player;
 
-					int[] numDragonFrames = { 2, 8, 1, 2, 4, 2, 5 };
-					player = new Player(tileMap,"/Sprites/Player/playersprites.gif",numDragonFrames);
-					player.setX(Double.valueOf(playerFields[1]));
-					player.setY(Double.valueOf(playerFields[2]));
-					player.setXmap(Double.valueOf(playerFields[3]));				
-					player.setYmap(Double.valueOf(playerFields[4]));
-					if(playerFields[0].equals(playerId))
-					{
-						hud = new HUD(player);
+						int[] numDragonFrames = { 2, 8, 1, 2, 4, 2, 5 };
+
+							player = new Player(tileMap,"/Sprites/Player/playersprites.gif",numDragonFrames);
+
+						if(playerFields[5].equals("girl"))
+						{
+							int[] numGirlFrames = { 8, 8, 1, 2, 4, 2, 5 };
+							 
+							player = new Player(tileMap,"/Sprites/Player/playersprites.png",numGirlFrames);
+						}
+						player.setX(Double.valueOf(playerFields[1]));
+						player.setY(Double.valueOf(playerFields[2]));
+						player.setXmap(Double.valueOf(playerFields[3]));				
+						player.setYmap(Double.valueOf(playerFields[4]));
+						if(playerFields[0].equals(playerId))
+						{
+							hud = new HUD(player);
+						}
+						players.put(playerFields[0], player);
 					}
-					players.put(playerFields[0], player);
-				}
-				else
-				{
-					players.get(playerFields[0]).setX(Double.valueOf(playerFields[1]));
-					players.get(playerFields[0]).setY(Double.valueOf(playerFields[2]));
-					players.get(playerFields[0]).setXmap(Double.valueOf(playerFields[3]));				
-					players.get(playerFields[0]).setYmap(Double.valueOf(playerFields[4]));
-				}
-				
-				
+					else
+					{
+						players.get(playerFields[0]).setX(Double.valueOf(playerFields[1]));
+						players.get(playerFields[0]).setY(Double.valueOf(playerFields[2]));
+						players.get(playerFields[0]).setXmap(Double.valueOf(playerFields[3]));				
+						players.get(playerFields[0]).setYmap(Double.valueOf(playerFields[4]));
+					}
+					
+					
+			}
 		}
+		
 	}
 	
 	
@@ -461,7 +476,7 @@ public GameEvent createGameEvent() {
 	}
 	
 	
-	public void addNewPlayer(String pid)
+	public void addNewPlayer(String pid, String skin)
 	{
 		
 	}
@@ -567,6 +582,15 @@ public GameEvent createGameEvent() {
 			}
 
 		}
+	}
+
+	@Override
+	public void drawToScreen(Graphics graphics, BufferedImage image)
+	{
+		Graphics g2 = graphics;
+		g2.drawImage(image, 0, 0, GamePanel.WIDTH *  GamePanel.SCALE, GamePanel.HEIGHT * GamePanel.SCALE,  null);
+		g2.dispose();	
+		
 	}
 
 }

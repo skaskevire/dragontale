@@ -1,7 +1,9 @@
 package GameState;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,13 +20,11 @@ import Entity.Explosion;
 import Entity.Player;
 import Entity.Enemies.Hrum;
 import Entity.Enemies.Slugger;
-import server.tileMap.Background;
 import server.tileMap.TileMap;
 
 public class MultiplayerServerState extends GameState
 {	
 	private TileMap tileMap;
-	private Background bg;
 	private Map<String, Enemy> enemies;
 	private Map<String, Player> players = new HashMap<>();
 	private ArrayList<Explosion> explosions;
@@ -51,7 +51,6 @@ public class MultiplayerServerState extends GameState
 		tileMap.setTween(0.07);
 		
 
-		bg = new Background("/Backgrounds/grassbg1.gif", 0.1);
 		
 		populateEnemies();
 		
@@ -144,6 +143,8 @@ public class MultiplayerServerState extends GameState
 			.append(player.getValue().getXmap())
 			.append(",")
 			.append(player.getValue().getYmap())
+			.append(",")
+			.append(player.getValue().getSkin())
 			.append(":");
 		}
 		
@@ -193,12 +194,25 @@ public class MultiplayerServerState extends GameState
 	}
 	
 	
-	public void addNewPlayer(String pid)
+	public void addNewPlayer(String pid, String skin)
 	{		
 		if(players.get(pid) == null)
 		{
-			 int[] numDragonFrames = { 2, 8, 1, 2, 4, 2, 5 };			 
-			 Player player = new Player(tileMap,"/Sprites/Player/playersprites.gif",numDragonFrames);
+			
+			 Player player = null;
+			 if(skin.equals("girl"))
+			 {
+				 int[] numDragonFrames = { 2, 8, 1, 2, 4, 2, 5 };
+				 player = new Player(tileMap,"/Sprites/Player/playersprites.png",numDragonFrames, skin);
+			 }
+			 if(skin.equals("dragon"))
+			 {
+				 int[] numGirlFrames = { 8, 8, 1, 2, 4, 2, 5 };
+				 player = new Player(tileMap,"/Sprites/Player/playersprites.gif",numGirlFrames, skin);
+			 }
+			 
+			 
+			
 			 player.setPosition(100, 100);
 			 players.put(pid, player);
 		}		
@@ -207,6 +221,13 @@ public class MultiplayerServerState extends GameState
 	@Override
 	public void addOrUpdateEnemies(String data)
 	{		
+	}
+
+	@Override
+	public void drawToScreen(Graphics graphics, BufferedImage image)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

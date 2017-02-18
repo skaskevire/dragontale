@@ -2,7 +2,6 @@
 package GameState;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
@@ -54,7 +53,7 @@ public class GameModeChooseState extends MenuState
 		}
 		if (currentChoice == 2)
 		{
-			GameStateManager.getInstance().setState(GameStateManager.MULTIPLAYER_CLIENT);
+			GameStateManager.getInstance().setState(GameStateManager.MULTIPLAYER_INTERFACE_STATE);
 		}
 	}
 

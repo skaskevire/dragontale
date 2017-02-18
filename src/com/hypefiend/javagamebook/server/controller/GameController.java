@@ -48,7 +48,7 @@ public abstract class GameController extends Wrap {
     /** 
      * utility method for sending events to multiple players
      */
-    protected synchronized void sendBroadcastEvent(GameEvent e, Collection players) {
+    public void sendBroadcastEvent(GameEvent e, Collection players) {
     	
     	
 	Iterator i = players.iterator();

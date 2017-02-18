@@ -4,6 +4,7 @@ import com.hypefiend.javagamebook.common.GameEvent;
 import com.hypefiend.javagamebook.common.GameEventDefault;
 
 import GameState.GameStateManager;
+import GameState.ServerGameStateManager;
 
 public class GamePanel implements Runnable
 {
@@ -38,7 +39,7 @@ public class GamePanel implements Runnable
 	public void run()
 	{
 		init();
-		GameStateManager.getInstance().setState(GameStateManager.MULTIPLAYER_SERVER);
+		ServerGameStateManager.getInstance().setState(GameStateManager.MULTIPLAYER_SERVER);
 		long start;
 		long elapsed;
 		long wait;
@@ -71,6 +72,6 @@ public class GamePanel implements Runnable
 
 	private void update()
 	{
-		GameStateManager.getInstance().update();
+		ServerGameStateManager.getInstance().update();
 	}
 }

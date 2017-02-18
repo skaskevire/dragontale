@@ -1,8 +1,10 @@
 package GameState;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -305,7 +307,7 @@ public class Level1State extends GameState
 	}
 	
 	
-	public void addNewPlayer(String pid)
+	public void addNewPlayer(String pid, String skin)
 	{
 		
 	}
@@ -321,6 +323,15 @@ public class Level1State extends GameState
 	public void addOrUpdateEnemies(String data)
 	{
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void drawToScreen(Graphics graphics, BufferedImage image)
+	{
+		Graphics g2 = graphics;
+		g2.drawImage(image, 0, 0, GamePanel.WIDTH *  GamePanel.SCALE, GamePanel.HEIGHT * GamePanel.SCALE,  null);
+		g2.dispose();	
 		
 	}
 

@@ -7,11 +7,11 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 
-public class GameStateManager
+public class ServerGameStateManager
 {
 
 
-	private static GameStateManager instance;
+	private static ServerGameStateManager instance;
 
 	private GameState[] gameStates;
 	private int currentState;
@@ -25,22 +25,22 @@ public class GameStateManager
 	public static final int MULTIPLAYER_SERVER = 5;
 	public static final int MULTIPLAYER_INTERFACE_STATE = 6;
 
-	public static GameStateManager getInstance()
+	public static ServerGameStateManager getInstance()
 	{
 		if (instance == null)
 		{
-			synchronized (GameStateManager.class)
+			synchronized (ServerGameStateManager.class)
 			{
 				if (instance == null)
 				{
-					instance = new GameStateManager();
+					instance = new ServerGameStateManager();
 				}
 			}
 		}
 		return instance;
 	}
 
-	private GameStateManager()
+	private ServerGameStateManager()
 	{
 		gameStates = new GameState[NUMGAMESTATES];
 		currentState = MENUSTATE;
@@ -64,10 +64,6 @@ public class GameStateManager
 		if (state == GODSTATE)
 		{
 			gameStates[state] = new Level1State("girl");
-		}
-		if (state == MULTIPLAYER_CLIENT)
-		{
-			gameStates[state] = new MultiplayerClientState("dragon",(String) agrs[0],(String) agrs[1],(String) agrs[2]);
 		}
 		if (state == MULTIPLAYER_SERVER)
 		{
@@ -160,6 +156,11 @@ public class GameStateManager
 	public void keyReleased(int k)
 	{
 		gameStates[currentState].keyReleased(k);
+	}
+
+	public void addNewPlayer(String pid, String skin)
+	{
+		gameStates[currentState].addNewPlayer(pid, skin);
 	}
 	
 	public synchronized void drawToScreen(Graphics g2, BufferedImage image){

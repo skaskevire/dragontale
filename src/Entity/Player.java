@@ -44,6 +44,7 @@ public class Player extends MapObject
 
 	private int scratchDamage;
 	private int scratchRange;
+	private String skin;
 
 
 	private ArrayList<BufferedImage[]> sprites;
@@ -58,10 +59,25 @@ public class Player extends MapObject
 	
 	private HashMap<String, AudioPlayer> sfx;
 
-	public Player(TileMap tm, String skinPicturePath, int[] numFrames)
+	public Player(TileMap tm, String skinPicturePath, int[] numFrames, String skin)
 	{
-		super(tm);
+		this(tm, skinPicturePath, numFrames);
+		this.skin = skin;		
+	}
+	public String getSkin()
+	{
+		return skin;
+	}
 
+	public void setSkin(String skin)
+	{
+		this.skin = skin;
+	}
+
+	public Player(TileMap tm, String skinPicturePath, int[] numFrames)
+	{		
+		super(tm);
+		
 		width = 30;
 		height = 30;
 		cwidth = 20;
