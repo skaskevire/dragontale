@@ -36,17 +36,27 @@ public class EventWriter extends Wrap {
     public void run() {
  	ByteBuffer writeBuffer = ByteBuffer.allocateDirect(Globals.MAX_EVENT_SIZE);
 
-	GameEvent event;
+	GameEvent event = null;
 	running = true;
 	while (running) {
+
 	    try {
+	    	
+	    	
 		if ((event = eventQueue.deQueue()) != null) {
+
+			if (event.getRecipients() != null)
+			{
+				System.out.println(event.getRecipients().length);
+			}
+			
 		    processEvent(event, writeBuffer);
 		}
 	    }
 	    catch(InterruptedException e) {
 	    	e.printStackTrace();
 	    }
+
 	}
     }
 
@@ -59,7 +69,9 @@ public class EventWriter extends Wrap {
      * the additional parameter of the writeBuffer 
      */
     protected void processEvent(GameEvent event, ByteBuffer writeBuffer) {
+    	
 	NIOUtils.prepBuffer(event, writeBuffer);
+
 	
 	String[] recipients = event.getRecipients();
 	if (recipients == null) {
@@ -75,6 +87,7 @@ public class EventWriter extends Wrap {
 		.forEach(recipient -> write(recipient, writeBuffer));
 
 	}
+
 	
     }
     
@@ -86,7 +99,6 @@ public class EventWriter extends Wrap {
     private void write( String playerId, ByteBuffer writeBuffer) {	
 	Player player = gameServer.getPlayerById(playerId);
 	SocketChannel channel = player.getChannel();
-	
 	if (channel == null || !channel.isConnected()) {
 	   // log.error("writeEvent: client channel null or not connected");
 	    return;

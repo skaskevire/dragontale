@@ -237,4 +237,11 @@ public class MultiplayerServerState extends GameState
 		
 	}
 
+	@Override
+	public void removePlayer(String pid)
+	{
+		players.remove(pid);
+		
+	}
+
 }

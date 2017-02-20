@@ -62,10 +62,10 @@ public class NIOUtils {
 	    while (nbytes != toWrite) {
 		nbytes += channel.write(writeBuffer);
 		
-		try {
-		    Thread.sleep(Globals.CHANNEL_WRITE_SLEEP);
-		}
-		catch (InterruptedException e) {}
+		//try {
+		//    Thread.sleep(1l);
+		//}
+		//catch (InterruptedException e) {}
 	    }
 	}
 	catch (ClosedChannelException cce) {

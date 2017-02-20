@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 public class GameStateManager
 {
-
+	//private ArrayList<MultiplayerClientState> s = new ArrayList<MultiplayerClientState>();
 
 
 	private static GameStateManager instance;
@@ -69,6 +69,11 @@ public class GameStateManager
 		}
 		if (state == MULTIPLAYER_CLIENT)
 		{
+			//for (int i = 0; i < 10; i++)
+			/*{
+				MultiplayerClientState mst1 = new MultiplayerClientState("dragon",(String) agrs[0],(String) agrs[1],(String) agrs[2]);
+				s.add(mst1);
+			}*/
 
 			gameStates[state] = new MultiplayerClientState("dragon",(String) agrs[0],(String) agrs[1],(String) agrs[2]);
 		}

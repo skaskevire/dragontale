@@ -163,6 +163,11 @@ public class ServerGameStateManager
 		gameStates[currentState].addNewPlayer(pid, skin);
 	}
 	
+	public void removePlayer(String pid)
+	{
+		gameStates[currentState].removePlayer(pid);
+	}
+	
 	public synchronized void drawToScreen(Graphics g2, BufferedImage image){
 		gameStates[currentState].drawToScreen(g2, image);
 	}

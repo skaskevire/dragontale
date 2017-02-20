@@ -144,7 +144,7 @@ public GameEvent createGameEvent() {
 		login(playerSkin);
 		try
 		{
-			Thread.sleep(1000L);
+			Thread.sleep(10L);
 		}
 		catch (InterruptedException e)
 		{
@@ -406,9 +406,11 @@ public GameEvent createGameEvent() {
 	
 
 	public void updatePlayerCoordinates(String data)
-	{	
+	{
 		if(data != null)
 		{
+			
+
 			String [] es = data.split(":");
 			for (int i = 0; i < es.length ; i++)
 			{
@@ -616,6 +618,13 @@ public GameEvent createGameEvent() {
 		}
 		
 		multiplayerClientStateWorker.setRunning(false);
+	}
+
+	@Override
+	public void removePlayer(String pid)
+	{
+		players.remove(pid);
+		
 	}
 
 }

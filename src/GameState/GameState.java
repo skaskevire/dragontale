@@ -15,6 +15,7 @@ public abstract class GameState
 	
 	public abstract void updatePlayerStates(String data, String playerId);
 	public abstract void addNewPlayer(String pid, String skin);
+	public abstract void removePlayer(String pid);
 	public abstract String getPlayerCoordinates();
 	
 	

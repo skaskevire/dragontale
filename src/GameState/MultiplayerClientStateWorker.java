@@ -91,8 +91,8 @@ public class MultiplayerClientStateWorker implements Runnable
 				    mcs.inGame = false;
 				    break;
 				case GameEventDefault.SB_PLAYER_QUIT:
+					mcs.removePlayer(inEvent.getMessage());
 				    stdOut( inEvent.getMessage());
-				    mcs.inGame = false;
 				    break;		    
 				default:
 				    stdOut( inEvent.getMessage());
