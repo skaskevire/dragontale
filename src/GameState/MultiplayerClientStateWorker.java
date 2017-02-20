@@ -124,7 +124,7 @@ public class MultiplayerClientStateWorker implements Runnable
 	 
 	    public void stdOut(String str) {
 		if ((str != null) && !str.equals(""))
-		    System.out.println("\n" + str);
+			// COMMENT System.out.println("\n" + str);
 		if (mcs.inGame)
 		    System.out.print( mcs.playerId + " vs. " + mcs.opponentId + " > " );
 		else

@@ -54,8 +54,9 @@ public class EventQueue {
     		    wait();
     		    count --;
     		}
-    		System.out.println(name + " | " + events.size());
+    		
     		GameEvent e = (GameEvent) events.removeFirst();
+    		// COMMENT System.out.println(name + " | " + events.size() + e.getMessage() + " " + e.getType());
     		return e;
     	}
     }

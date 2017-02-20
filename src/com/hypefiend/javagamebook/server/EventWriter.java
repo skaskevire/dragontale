@@ -47,13 +47,13 @@ public class EventWriter extends Wrap {
 
 			if (event.getRecipients() != null)
 			{
-				System.out.println(event.getRecipients().length);
+				// COMMENT System.out.println(event.getRecipients().length);
 			}
 			
 		    processEvent(event, writeBuffer);
 		}
 	    }
-	    catch(InterruptedException e) {
+	    catch(Exception e) {
 	    	e.printStackTrace();
 	    }
 

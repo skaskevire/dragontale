@@ -166,7 +166,6 @@ public class MultiplayerServerState extends GameState
 			}
 		}	
 		players.get(playerId).setKeyEvents(keyEvents);
-		//player.setKeyEvents(keyEvents);
 	}
 	
 	@Override

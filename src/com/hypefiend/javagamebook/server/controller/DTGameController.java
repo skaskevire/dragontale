@@ -61,6 +61,7 @@ public class DTGameController extends GameController
 	for (int i=0; i<numWorkers; i++) {
 	    workers[i] = new Thread(this, shortname + "-" + (i+1));
 	    workers[i].setDaemon(true);
+	    workers[i].setPriority(Thread.NORM_PRIORITY + 1);
 	    workers[i].start();
 	}
     }
@@ -127,7 +128,7 @@ public class DTGameController extends GameController
 		    logout(event);
 		    break;
 		case GameEventDefault.C_JOIN_GAME:
-		    join(event);
+		   // join(event);
 		    break;
 		case GameEventDefault.C_QUIT_GAME:
 		    quit(event);

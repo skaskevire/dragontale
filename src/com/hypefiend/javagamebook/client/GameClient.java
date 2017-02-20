@@ -287,11 +287,11 @@ public abstract class GameClient extends Thread{
 
     public void stdOut(String str) {
 	if ((str != null) && !str.equals(""))
-	    System.out.println("\n" + str);
+		// COMMENT System.out.println("\n" + str);
 	if (inGame)
-	    System.out.print( playerId + " vs. " + opponentId + " > " );
+		// COMMENT System.out.print( playerId + " vs. " + opponentId + " > " );
 	else
-	    System.out.print( playerId + " > " );
+		// COMMENT System.out.print( playerId + " > " );
 
     }   
     

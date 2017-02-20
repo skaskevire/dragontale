@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
 public class SelectAndRead extends Thread {
     /** log4j logger */
     private static Logger log = Logger.getLogger("SelectAndRead");
-private ArrayList<Thread> workerThreads = new ArrayList<Thread>();
+//private ArrayList<Thread> workerThreads = new ArrayList<Thread>();
     /** pending connections */
     private LinkedList newClients;
 
@@ -66,7 +66,7 @@ private ArrayList<Thread> workerThreads = new ArrayList<Thread>();
 	    selector = Selector.open();
 
 	    while (true) {
-		//select();
+		select();
 		checkNewConnections();
 
 		// sleep just a bit
@@ -87,21 +87,21 @@ private ArrayList<Thread> workerThreads = new ArrayList<Thread>();
 	    while (newClients.size() > 0) {
 	    	
 	    	
-	    	Thread thread = new Thread(new SelectAndReadWorker((SocketChannel)newClients.removeFirst(), gameServer));
-	    	workerThreads.add(thread);
-	    	thread.start();
+	    	//Thread thread = new Thread(new SelectAndReadWorker((SocketChannel)newClients.removeFirst(), gameServer));
+	    	//workerThreads.add(thread);
+	    	//thread.start();
 	    	
-		//try {			
-		    //SocketChannel clientChannel = (SocketChannel)newClients.removeFirst();
-		    //clientChannel.configureBlocking( false);
-		    //clientChannel.register( selector, SelectionKey.OP_READ, new Attachment());
-		//}
-		//catch (ClosedChannelException cce) {
-		//    log.error("channel closed", cce);
-		//}
-		//catch (IOException ioe) {
-		//    log.error("ioexception on clientChannel", ioe);
-		//}
+		try {			
+		    SocketChannel clientChannel = (SocketChannel)newClients.removeFirst();
+		    clientChannel.configureBlocking( false);
+		    clientChannel.register( selector, SelectionKey.OP_READ, new Attachment());
+		}
+		catch (ClosedChannelException cce) {
+		    log.error("channel closed", cce);
+		}
+		catch (IOException ioe) {
+		    log.error("ioexception on clientChannel", ioe);
+		}
 	    	
 	    }
 	}

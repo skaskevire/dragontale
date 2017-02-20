@@ -59,7 +59,7 @@ public class RPSConsoleEventReader extends Thread {
 
     public void run() {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	System.out.println(WELCOME_TEXT + HELP_TEXT);
+	// COMMENTSystem.out.println(WELCOME_TEXT + HELP_TEXT);
 			
 	running = true;
 	while (running) {
