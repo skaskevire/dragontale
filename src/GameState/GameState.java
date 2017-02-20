@@ -1,7 +1,6 @@
 package GameState;
 
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -25,4 +24,8 @@ public abstract class GameState
 	
 	
 	public abstract void drawToScreen(Graphics graphics, BufferedImage image);
+	
+	
+	
+	public abstract void performCloseOperations();
 }

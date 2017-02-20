@@ -3,12 +3,14 @@ package GameState;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 
 public class GameStateManager
 {
+	private ArrayList<MultiplayerClientState> s = new ArrayList<MultiplayerClientState>();
 
 
 	private static GameStateManager instance;
@@ -67,6 +69,16 @@ public class GameStateManager
 		}
 		if (state == MULTIPLAYER_CLIENT)
 		{
+			MultiplayerClientState mst1 = new MultiplayerClientState("dragon",(String) agrs[0],(String) agrs[1],(String) agrs[2]);
+			MultiplayerClientState mst2 = new MultiplayerClientState("dragon",(String) agrs[0],(String) agrs[1],(String) agrs[2]);
+			MultiplayerClientState mst3 = new MultiplayerClientState("dragon",(String) agrs[0],(String) agrs[1],(String) agrs[2]);
+			MultiplayerClientState mst4 = new MultiplayerClientState("dragon",(String) agrs[0],(String) agrs[1],(String) agrs[2]);
+			MultiplayerClientState mst5 = new MultiplayerClientState("dragon",(String) agrs[0],(String) agrs[1],(String) agrs[2]);
+			s.add(mst1);
+			s.add(mst2);
+			s.add(mst3);
+			s.add(mst4);
+			s.add(mst5);
 			gameStates[state] = new MultiplayerClientState("dragon",(String) agrs[0],(String) agrs[1],(String) agrs[2]);
 		}
 		if (state == MULTIPLAYER_SERVER)
@@ -81,6 +93,7 @@ public class GameStateManager
 
 	private void unloadState(int state)
 	{
+		gameStates[state].performCloseOperations();
 		gameStates[state] = null;
 	}
 

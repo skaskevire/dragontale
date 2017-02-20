@@ -5,13 +5,23 @@ import java.nio.ByteBuffer;
 
 import com.hypefiend.javagamebook.common.GameEvent;
 import com.hypefiend.javagamebook.common.GameEventDefault;
-import com.hypefiend.javagamebook.common.Globals;
 import com.hypefiend.javagamebook.common.NIOUtils;
 
 public class MultiplayerClientStateWorker implements Runnable
 {
 	private MultiplayerClientState mcs;
+	private boolean running;
 	
+	public boolean isRunning()
+	{
+		return running;
+	}
+
+	public void setRunning(boolean running)
+	{
+		this.running = running;
+	}
+
 	public MultiplayerClientStateWorker(MultiplayerClientState mcs)
 	{
 		this.mcs = mcs;
@@ -20,12 +30,14 @@ public class MultiplayerClientStateWorker implements Runnable
 	@Override
 	public void run()
 	{
-		while(true)
+		running = true;
+		while(running)
 		{
 			try
 			{
 				processIncomingEvents();
 				writeOutgoingEvents();
+				Thread.sleep(10l);
 			}
 			catch(Exception e)
 			{

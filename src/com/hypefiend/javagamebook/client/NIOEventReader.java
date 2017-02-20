@@ -3,7 +3,6 @@ package com.hypefiend.javagamebook.client;
 import com.hypefiend.javagamebook.common.*;
 
 import GameState.MultiplayerClientState;
-import Main.GamePanel;
 
 import java.nio.*;
 import java.nio.channels.*;
@@ -39,7 +38,17 @@ public class NIOEventReader extends Thread {
     /** still running? */
     private  boolean running;
  
-    /** 
+    public boolean isRunning()
+	{
+		return running;
+	}
+
+	public void setRunning(boolean running)
+	{
+		this.running = running;
+	}
+
+	/** 
      * constructor.
      */
     public NIOEventReader(MultiplayerClientState gc, SocketChannel channel, EventQueue queue) {

@@ -230,4 +230,11 @@ public class MultiplayerServerState extends GameState
 		
 	}
 
+	@Override
+	public void performCloseOperations()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

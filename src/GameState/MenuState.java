@@ -202,4 +202,11 @@ public class MenuState extends GameState
 		g2.dispose();		
 	}
 
+	@Override
+	public void performCloseOperations()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

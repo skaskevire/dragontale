@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.ConnectException;
 import java.net.InetAddress;
@@ -34,8 +35,6 @@ import Entity.Enemy;
 import Entity.Explosion;
 import Entity.HUD;
 import Entity.Player;
-import Entity.Enemies.Hrum;
-import Entity.Enemies.Slugger;
 import Main.GamePanel;
 import server.tileMap.Background;
 import server.tileMap.TileMap;
@@ -73,9 +72,20 @@ protected String playerId;
 protected String opponentId;
 /** are we playing right now? */
 protected boolean inGame = false;	
+
+
+
+
+
 ////////////////////////////////////////
 ////////////////////////////////////////
 ////////////////////////////////////////
+
+
+
+private static final int NUM_WORKER_THREADS = 1;
+Thread[] workerThreads = new Thread[NUM_WORKER_THREADS];
+MultiplayerClientStateWorker multiplayerClientStateWorker;
 
 public GameEvent createGameEvent() {
 	return new GameEventDefault();
@@ -121,20 +131,13 @@ public GameEvent createGameEvent() {
 		init(playerType);
 		
 		
-		
-		
-		
-		
-		
-		
-		MultiplayerClientStateWorker mcsw = new MultiplayerClientStateWorker(this);
-		Thread[] threads = new Thread[10];
-		
-		for(int i = 0; i < 10; i++)
+
+		multiplayerClientStateWorker = new MultiplayerClientStateWorker(this);
+		for(int i = 0; i < NUM_WORKER_THREADS; i++)
 		{
-			threads[i] = new Thread(mcsw);
-			threads[i].setDaemon(true);
-			threads[i].start();
+			workerThreads[i] = new Thread(multiplayerClientStateWorker);
+			workerThreads[i].setDaemon(true);
+			workerThreads[i].start();
 		}
 		
 		
@@ -591,6 +594,28 @@ public GameEvent createGameEvent() {
 		g2.drawImage(image, 0, 0, GamePanel.WIDTH *  GamePanel.SCALE, GamePanel.HEIGHT * GamePanel.SCALE,  null);
 		g2.dispose();	
 		
+	}
+    /**
+     * shutdown the client
+     * stop our readers and close the channel
+     */
+    protected void shutdown() {
+	
+	
+    }    
+	@Override
+	public void performCloseOperations()
+	{
+		netReader.shutdown();
+		
+		try {
+		    channel.close();
+		}
+		catch (IOException ioe) {
+		    ioe.printStackTrace();
+		}
+		
+		multiplayerClientStateWorker.setRunning(false);
 	}
 
 }

@@ -76,6 +76,8 @@ public class GameServer extends Thread {
     public void init() {
 	log.info("GameServer initializing");
 
+	// DTGameController dtgc = new DTGameController();
+	//gameControllers.put("" + dtgc.ge.hashCode(), dtgc);
 	loadGameControllers();
 	initServerSocket();
 
