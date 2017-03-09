@@ -124,7 +124,7 @@ public class MultiplayerClientStateWorker implements Runnable
 	 
 	    public void stdOut(String str) {
 		if ((str != null) && !str.equals(""))
-			// COMMENT System.out.println("\n" + str);
+			 System.out.println("\n" + str);
 		if (mcs.inGame)
 		    System.out.print( mcs.playerId + " vs. " + mcs.opponentId + " > " );
 		else
@@ -172,7 +172,7 @@ public class MultiplayerClientStateWorker implements Runnable
 		ge.setPlayerId(mcs.playerId);
 
 		NIOUtils.prepBuffer(ge, writeBuffer);
-		NIOUtils.channelWrite(mcs.channel, writeBuffer);
+		NIOUtils.channelWrite(mcs.channel, writeBuffer, null);
 	    }
 
 }

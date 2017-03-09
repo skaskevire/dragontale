@@ -295,7 +295,7 @@ public GameEvent createGameEvent() {
 		ge.setPlayerId(playerId);
 
 		NIOUtils.prepBuffer(ge, writeBuffer);
-		NIOUtils.channelWrite(channel, writeBuffer);
+		NIOUtils.channelWrite(channel, writeBuffer, null);
 	    }
 	
 	

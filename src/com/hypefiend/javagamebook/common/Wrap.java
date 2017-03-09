@@ -21,10 +21,30 @@ public abstract class Wrap implements Runnable, EventHandler {
     /** incoming event queue */
     protected EventQueue eventQueue;
 
-    /** are we running? **/
+    public EventQueue getEventQueue()
+	{
+		return eventQueue;
+	}
+
+	public void setEventQueue(EventQueue eventQueue)
+	{
+		this.eventQueue = eventQueue;
+	}
+
+	/** are we running? **/
     protected boolean running = false;
 
-    /** our pool of worker threads */
+    public boolean isRunning()
+	{
+		return running;
+	}
+
+	public void setRunning(boolean running)
+	{
+		this.running = running;
+	}
+
+	/** our pool of worker threads */
     protected Thread workers[];
 
     /** number of idle workers */
@@ -85,7 +105,25 @@ public abstract class Wrap implements Runnable, EventHandler {
 		    processEvent(event);
 		}
 	    }
-	    catch (InterruptedException e) {
+	    catch (Exception e) {
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	
+	    	e.printStackTrace();
+	    	e.printStackTrace();
+	    	e.printStackTrace();
 	    }
 	}
     }

@@ -3,6 +3,8 @@ package com.hypefiend.javagamebook.server.controller;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
@@ -21,7 +23,7 @@ import server.main.GamePanel;
 public class DTGameController extends GameController 
 {
 	 /** list of connected players */
-    public static HashMap players = new HashMap();
+    public static final Map players = new HashMap<>();
 
     /** list of games */
     protected HashMap games;

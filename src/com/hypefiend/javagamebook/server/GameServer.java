@@ -49,7 +49,27 @@ public class GameServer extends Thread {
     private SelectAndRead selectAndRead;
     private EventWriter eventWriter;
 
-    private static long nextSessionId = 0;
+   public EventWriter getEventWriter()
+	{
+		return eventWriter;
+	}
+
+public SelectAndRead getSelectAndRead()
+	{
+		return selectAndRead;
+	}
+
+	public void setSelectAndRead(SelectAndRead selectAndRead)
+	{
+		this.selectAndRead = selectAndRead;
+	}
+
+	public void setEventWriter(EventWriter eventWriter)
+	{
+		this.eventWriter = eventWriter;
+	}
+
+	private static long nextSessionId = 0;
 
     /**
      * main. 
@@ -96,12 +116,12 @@ public class GameServer extends Thread {
 	    // open a non-blocking server socket channel
 	    sSockChan = ServerSocketChannel.open();
 	    sSockChan.configureBlocking(false);
+	   
 
 	    // bind to localhost on designated port
 	    InetAddress addr = InetAddress.getLocalHost();
 	    log.info("binding to address: " + addr.getHostAddress());
 	    sSockChan.socket().bind(new InetSocketAddress(addr, Globals.PORT));
-	    
 	    // get a selector
 	    selector = Selector.open();
 
@@ -122,7 +142,7 @@ public class GameServer extends Thread {
 	init();
 	log.info("******** GameServer running ********");
 	running = true;
-	int numReady = 0;
+	int numReady = 0;	
 
 	while (running) {
 	    // note, since we only have one ServerSocket to listen to,
@@ -248,7 +268,7 @@ public class GameServer extends Thread {
      * pass the event on to the EventWriter
      */
     public void writeEvent(GameEvent e) {
-	eventWriter.handleEvent(e);
+    	eventWriter.handleEvent(e);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.hypefiend.javagamebook.common;
 
+import java.net.SocketOption;
 import java.nio.*;
 import java.nio.channels.*;
 
@@ -48,29 +49,58 @@ public class NIOUtils {
 	
     }
     
-
     /** 
      * write the contents of a ByteBuffer to the given SocketChannel
      */
-    public static void channelWrite(SocketChannel channel, ByteBuffer writeBuffer) {
+    public static void channelWrite(SocketChannel channel, ByteBuffer writeBuffer, Selector selector) {
+    	//System.out.println(channel.isBlocking());
 	long nbytes = 0;
 	long toWrite = writeBuffer.remaining();
+	
+	
+	int count = 0;
 
 	// loop on the channel.write() call since it will not necessarily
 	// write all bytes in one shot
 	try {
+		System.out.println(toWrite);
 	    while (nbytes != toWrite) {
-		nbytes += channel.write(writeBuffer);
+	    	
+	    /*	if(toWrite > 100)
+	    	{
+
+	    			System.out.println("Error!");
+	    			System.out.println(count);
+	    			System.exit(1);
+	    	}*/
+	    	int bytesWritten = channel.write(writeBuffer);
+	    	if(bytesWritten == 0)
+	    	{
+	    		System.out.println("Error");
+	    		return;
+	    	}
+	    	nbytes += bytesWritten;
+		System.out.println(nbytes + " count " + count + " " + Thread.currentThread().getName());
+		System.out.println(channel.socket().getReceiveBufferSize());
+		count++;
 		
-		//try {
-		//    Thread.sleep(1l);
-		//}
-		//catch (InterruptedException e) {}
+		try {
+		    Thread.sleep(1l);
+		}
+		catch (InterruptedException e) {
+			
+			System.out.println(e);
+			System.exit(1);
+		}
 	    }
 	}
 	catch (ClosedChannelException cce) {
+		System.out.println(cce);
+		System.exit(1);
 	}
 	catch (Exception e) {
+		System.out.println(e);
+		System.exit(1);
 	} 
 	
 	// get ready for another write if needed

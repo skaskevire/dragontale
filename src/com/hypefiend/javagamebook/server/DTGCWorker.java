@@ -35,7 +35,7 @@ public class DTGCWorker implements Runnable
 	
 			if(!players.isEmpty())
 			{
-				Iterator<Player> playersIterator = players.values().iterator();
+				/*Iterator<Player> playersIterator = players.values().iterator();
 				while(playersIterator.hasNext())
 				{
 					Player player = playersIterator.next();
@@ -45,7 +45,7 @@ public class DTGCWorker implements Runnable
 						playersIterator.remove();
 						dtgc.sendBroadcastEvent(new GameEventDefault(GameEventDefault.SB_PLAYER_QUIT, player.getPlayerId()), players.values());
 					}
-				}
+				}*/
 
 				dtgc.sendBroadcastEvent(new GameEventDefault(GameEventDefault.S_UPDATE_ENEMY_COORDINATES, csToUpdate), players.values());
 				dtgc.sendBroadcastEvent(new GameEventDefault(GameEventDefault.S_UPDATE_PLAYER_COORDINATES, coordinatesToUpdate), players.values());
