@@ -13,7 +13,7 @@ public class Globals {
     public static final int PORT = 8398;
 
     /** size of ByteBuffer for reading/writing from channels */
-    public static final int NET_BUFFER_SIZE=512;
+    public static final int NET_BUFFER_SIZE=5012;
 
     /** maximum event size in bytes */
     public static final int MAX_EVENT_SIZE=5000;

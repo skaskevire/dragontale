@@ -48,7 +48,7 @@ public class MultiplayerClientState extends GameState
 	private Map<String, Enemy> enemies;
 	private ArrayList<Explosion> explosions;
 	private HUD hud;
-	AudioPlayer bgMusic;
+	//AudioPlayer bgMusic;
 	
 	
 ////////////////////////////////////////
@@ -117,7 +117,7 @@ public GameEvent createGameEvent() {
 	//	    log.error("unknown host: " + args[0]);
 		    System.exit(1);
 		}
-		this.playerId = playerName + new Random().nextInt(93);
+		this.playerId = playerName + new Random().nextInt(1993);
 
 		// connect to the server
 		if (!connect()) 
@@ -213,8 +213,8 @@ public GameEvent createGameEvent() {
 		populateEnemies();
 		
 		explosions = new ArrayList<Explosion>();
-		bgMusic = new AudioPlayer("/Music/level1-1.mp3");
-		bgMusic.play();
+		//bgMusic = new AudioPlayer("/Music/level1-1.mp3");
+		//bgMusic.play();
 	}
 	
 	private void populateEnemies()
@@ -242,7 +242,7 @@ public GameEvent createGameEvent() {
 			
 			if(players.get(playerId).isDead())
 			{
-				bgMusic.stop();
+				//bgMusic.stop();
 				new AudioPlayer("/Music/fail.mp3").play();
 				GameStateManager.getInstance().setState(GameStateManager.MENUSTATE);
 			}
